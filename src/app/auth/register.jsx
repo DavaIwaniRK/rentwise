@@ -67,7 +67,7 @@ export default function RegisterScreen() {
 
       <View style={styles.loginRow}>
         <Text style={styles.loginText}>Sudah punya akun? </Text>
-        <Link href="/(auth)/login" style={styles.loginLink}>
+        <Link href="/auth/login" style={styles.loginLink}>
           Login
         </Link>
       </View>

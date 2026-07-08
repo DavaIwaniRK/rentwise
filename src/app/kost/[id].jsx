@@ -46,7 +46,9 @@ export default function KostDetailScreen() {
         <Image source={{ uri: kost.gambar }} style={styles.image} />
 
         <View style={styles.body}>
-          <Text style={styles.nama}>Kontrakan {kost.nama}</Text>
+          <Text style={styles.nama}>
+            {(kost.tipe ? kost.tipe.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ") : "Kost")} {kost.nama}
+          </Text>
           <Text style={styles.update}>Update {formatTanggal(kost.tanggalUpdate)}</Text>
 
           <View style={styles.priceBlock}>
@@ -54,19 +56,27 @@ export default function KostDetailScreen() {
             <Text style={styles.estimasi}>Estimasi {formatHargaBulanan(kost.hargaEstimasi)}</Text>
           </View>
 
-          <Text style={styles.sectionTitle}>Detail Kontrakan</Text>
+          <Text style={styles.sectionTitle}>
+            Detail {(kost.tipe ? kost.tipe.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ") : "Kost")}
+          </Text>
           <View style={styles.infoGrid}>
             <View style={styles.infoItem}>
               <Ionicons name="bed-outline" size={18} color={colors.textSecondary} />
-              <Text style={styles.infoText}>1 kamar</Text>
+              <Text style={styles.infoText}>{kost.jumlahKamar || 1} kamar</Text>
             </View>
+            {kost.luas ? (
+              <View style={styles.infoItem}>
+                <Ionicons name="resize-outline" size={18} color={colors.textSecondary} />
+                <Text style={styles.infoText}>Luas {kost.luas} m²</Text>
+              </View>
+            ) : null}
             <View style={styles.infoItem}>
               <Ionicons name="walk-outline" size={18} color={colors.textSecondary} />
               <Text style={styles.infoText}>{formatJarak(kost.jarakjalanutama)} ke jalan utama</Text>
             </View>
             <View style={styles.infoItem}>
               <Ionicons name="location-outline" size={18} color={colors.textSecondary} />
-              <Text style={styles.infoText}>{kost.area}</Text>
+              <Text style={styles.infoText}>{kost.area} › {kost.daerah}</Text>
             </View>
           </View>
 

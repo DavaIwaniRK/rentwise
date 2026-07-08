@@ -10,10 +10,10 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { KostCard } from "../../components/KostCard";
-import { colors } from "../../constants/colors";
+import { KostCard } from "../../components/kostCard";
+import { colors } from "../../constants/color";
 import { typography } from "../../constants/typography";
-import { useAuthContext } from "../../contexts/AuthContext";
+import { useAuthContext } from "../../context/authContext";
 import { getKostList } from "../../services/api";
 
 export default function HomeScreen() {

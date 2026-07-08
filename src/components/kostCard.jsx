@@ -33,7 +33,7 @@ export function KostCard({ kost }) {
       <View style={styles.infoRow}>
         <View style={styles.infoItem}>
           <Ionicons name="bed-outline" size={14} color={colors.textSecondary} />
-          <Text style={styles.infoText}>1</Text>
+          <Text style={styles.infoText}>{kost.jumlahKamar || 1}</Text>
         </View>
         <View style={styles.infoItem}>
           <Ionicons name="walk-outline" size={14} color={colors.textSecondary} />

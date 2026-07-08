@@ -1,237 +1,259 @@
-// Titik pusat untuk semua komunikasi ke backend.
-// Saat ini pakai data dummy + delay palsu supaya terasa seperti network call.
-// Kalau backend sudah siap, ganti isi tiap fungsi dengan fetch() ke API asli.
+// Titik pusat untuk semua komunikasi ke backend RentWise.
+// Menghubungkan aplikasi React Native Expo ke server backend lokal Express.
 
-const BASE_URL = "https://api.rentwise.example.com";
+// Gunakan 10.0.2.2 untuk emulator Android, atau IP laptop Anda jika diuji menggunakan HP fisik
+const BASE_URL = "http://192.168.56.1:3001";
 
-const DUMMY_KOST = [
-  {
-    id: "1",
-    nama: "Kost Melati",
-    area: "Jakarta Pusat",
-    daerah: "Menteng",
-    hargaSekarang: 1200000,
-    hargaEstimasi: 1300000,
-    jarakKampus: 60,
-    jarakStasiun: 30,
-    gambar: "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?w=800",
-    deskripsi: "Kamar kost nyaman, lokasi strategis dekat kampus dan stasiun, fasilitas lengkap.",
-    tanggalUpdate: "2026-07-08",
-  },
-  {
-    id: "2",
-    nama: "Kost Melati 2",
-    area: "Jakarta Pusat",
-    daerah: "Gambir",
-    hargaSekarang: 1500000,
-    hargaEstimasi: 1400000,
-    jarakKampus: 250,
-    jarakStasiun: 75,
-    gambar: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800",
-    deskripsi: "Kost asri dengan suasana tenang, cocok untuk mahasiswa maupun pekerja.",
-    tanggalUpdate: "2026-07-02",
-  },
-  {
-    id: "3",
-    nama: "Kost Pak Prac",
-    area: "Jakarta Barat",
-    daerah: "Kebon Jeruk",
-    hargaSekarang: 6500000,
-    hargaEstimasi: 7000000,
-    jarakKampus: 250,
-    jarakStasiun: 1000,
-    gambar: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800",
-    deskripsi: "Rumah kontrakan luas dan strategis, cocok untuk keluarga kecil.",
-    tanggalUpdate: "2026-07-08",
-  },
-  {
-    id: "4",
-    nama: "Kost Anggrek",
-    area: "Jakarta Selatan",
-    daerah: "Kebayoran Baru",
-    hargaSekarang: 1800000,
-    hargaEstimasi: 1900000,
-    jarakKampus: 400,
-    jarakStasiun: 150,
-    gambar: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800",
-    deskripsi: "Kost bersih dan nyaman di kawasan Kebayoran Baru, dekat pusat perbelanjaan.",
-    tanggalUpdate: "2026-07-05",
-  },
-  {
-    id: "5",
-    nama: "Kost Mawar",
-    area: "Jakarta Selatan",
-    daerah: "Tebet",
-    hargaSekarang: 1100000,
-    hargaEstimasi: 1200000,
-    jarakKampus: 500,
-    jarakStasiun: 200,
-    gambar: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800",
-    deskripsi: "Kost strategis di Tebet, dekat MRT dan berbagai kuliner.",
-    tanggalUpdate: "2026-07-01",
-  },
-  {
-    id: "6",
-    nama: "Kost Cempaka",
-    area: "Jakarta Utara",
-    daerah: "Kelapa Gading",
-    hargaSekarang: 1400000,
-    hargaEstimasi: 1500000,
-    jarakKampus: 700,
-    jarakStasiun: 300,
-    gambar: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800",
-    deskripsi: "Kost modern di Kelapa Gading, area komersial dengan berbagai fasilitas lengkap.",
-    tanggalUpdate: "2026-07-06",
-  },
-  {
-    id: "7",
-    nama: "Kost Kenanga",
-    area: "Jakarta Timur",
-    daerah: "Cakung",
-    hargaSekarang: 900000,
-    hargaEstimasi: 1000000,
-    jarakKampus: 800,
-    jarakStasiun: 500,
-    gambar: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800",
-    deskripsi: "Kost terjangkau di Jakarta Timur, lingkungan tenang untuk mahasiswa.",
-    tanggalUpdate: "2026-07-03",
-  },
-  {
-    id: "8",
-    nama: "Kost Dahlia",
-    area: "Bogor",
-    daerah: "Bogor Tengah",
-    hargaSekarang: 700000,
-    hargaEstimasi: 750000,
-    jarakKampus: 300,
-    jarakStasiun: 400,
-    gambar: "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=800",
-    deskripsi: "Kost murah di pusat kota Bogor, udara segar dan suasana tenang.",
-    tanggalUpdate: "2026-07-07",
-  },
-  {
-    id: "9",
-    nama: "Kost Sejahtera",
-    area: "Bekasi",
-    daerah: "Bekasi Barat",
-    hargaSekarang: 850000,
-    hargaEstimasi: 900000,
-    jarakKampus: 1200,
-    jarakStasiun: 600,
-    gambar: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
-    deskripsi: "Kost nyaman di Bekasi Barat, akses mudah ke tol dan transportasi menuju Jakarta.",
-    tanggalUpdate: "2026-07-04",
-  },
-  {
-    id: "10",
-    nama: "Kost Menteng Indah",
-    area: "Jakarta Pusat",
-    daerah: "Menteng",
-    hargaSekarang: 2500000,
-    hargaEstimasi: 2600000,
-    jarakKampus: 100,
-    jarakStasiun: 50,
-    gambar: "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800",
-    deskripsi: "Kost premium di Menteng, kawasan elite Jakarta Pusat. Fasilitas lengkap dan keamanan 24 jam.",
-    tanggalUpdate: "2026-07-08",
-  },
-];
+// Variabel modul untuk menyimpan session user yang sedang aktif secara in-memory
+let currentToken = null;
+let currentUser = null;
 
-// Peta kota beserta daerah-daerahnya — dipakai di halaman Search
-export const WILAYAH = [
-  {
-    kota: "Jakarta Pusat",
-    daerah: ["Menteng", "Gambir", "Tanah Abang", "Senen", "Cempaka Putih", "Johar Baru"],
-  },
-  {
-    kota: "Jakarta Selatan",
-    daerah: ["Kebayoran Baru", "Tebet", "Setiabudi", "Mampang Prapatan", "Pancoran", "Cilandak"],
-  },
-  {
-    kota: "Jakarta Barat",
-    daerah: ["Kebon Jeruk", "Grogol Petamburan", "Kembangan", "Cengkareng", "Tambora", "Palmerah"],
-  },
-  {
-    kota: "Jakarta Utara",
-    daerah: ["Kelapa Gading", "Penjaringan", "Pademangan", "Tanjung Priok", "Koja", "Cilincing"],
-  },
-  {
-    kota: "Jakarta Timur",
-    daerah: ["Cakung", "Jatinegara", "Kramat Jati", "Matraman", "Pulo Gadung", "Duren Sawit"],
-  },
-  {
-    kota: "Bogor",
-    daerah: ["Bogor Tengah", "Bogor Utara", "Bogor Selatan", "Bogor Timur", "Bogor Barat", "Tanah Sareal"],
-  },
-  {
-    kota: "Bekasi",
-    daerah: ["Bekasi Barat", "Bekasi Timur", "Bekasi Utara", "Bekasi Selatan", "Jatiasih", "Rawalumbu"],
-  },
-  {
-    kota: "Depok",
-    daerah: ["Beji", "Cimanggis", "Sukmajaya", "Pancoran Mas", "Cipayung", "Sawangan"],
-  },
-  {
-    kota: "Tangerang",
-    daerah: ["Cipondoh", "Pinang", "Tangerang Kota", "Ciledug", "Karawaci", "Neglasari"],
-  },
-];
-
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+// Helper untuk mengambil header otorisasi JWT
+function getAuthHeaders() {
+  const headers = {
+    "Content-Type": "application/json"
+  };
+  if (currentToken) {
+    headers["Authorization"] = `Bearer ${currentToken}`;
+  }
+  return headers;
 }
 
 // --- AUTH ---
 
 export async function loginUser(email, password) {
-  await delay(700);
-  if (!email || !password) throw new Error("Email dan password wajib diisi");
-  return { token: "dummy-token-123", user: { id: "u1", nama: "Wowo", email } };
+  try {
+    const response = await fetch(`${BASE_URL}/api/users/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Email atau password salah.");
+    }
+
+    // Simpan token dan data user di memori modul api.js
+    currentToken = data.accessToken;
+    currentUser = data.data;
+
+    return {
+      token: data.accessToken,
+      user: {
+        id: String(data.data.id),
+        nama: data.data.name,
+        email: data.data.email,
+        role: data.data.role
+      }
+    };
+  } catch (err) {
+    throw new Error(err.message || "Gagal terhubung ke server backend.");
+  }
 }
 
 export async function registerUser(username, email, password) {
-  await delay(700);
-  return { token: "dummy-token-123", user: { id: "u1", nama: username, email } };
+  try {
+    // 1. Kirim data registrasi ke backend
+    const response = await fetch(`${BASE_URL}/api/users/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: username,
+        email,
+        password,
+        no_tlp: "08123456789", // Default phone untuk registrasi mobile
+        role: "user" // Role default pencari kost untuk mobile
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      const errorMsg = data.errors && data.errors.length > 0
+        ? data.errors.join(", ")
+        : (data.message || "Registrasi gagal.");
+      throw new Error(errorMsg);
+    }
+
+    // 2. Untuk UX yang mulus, lakukan login otomatis setelah registrasi berhasil
+    return await loginUser(email, password);
+  } catch (err) {
+    throw new Error(err.message || "Registrasi gagal.");
+  }
 }
 
-// --- KOST ---
+// --- KOST (PROPERTI) ---
+
+// Fungsi helper untuk memetakan respon properti dari model database ke format yang diharapkan mobile UI
+function mapPropertyToMobile(p) {
+  // Ekstrak area dan daerah secara cerdas dari string lokasi alamat lengkap
+  const locationParts = p.lokasi ? p.lokasi.split(",") : [];
+  const daerah = locationParts[0]?.trim() || "Menteng";
+  const area = locationParts[locationParts.length - 2]?.trim() || locationParts[locationParts.length - 1]?.trim() || "Jakarta Pusat";
+
+  return {
+    id: String(p.id),
+    nama: p.nama,
+    tipe: p.tipe,
+    luas: Number(p.luas),
+    jumlahKamar: Number(p.jumlah_kamar),
+    area: area,
+    daerah: daerah,
+    hargaSekarang: Number(p.harga),
+    hargaEstimasi: p.estimasi_harga ? Number(p.estimasi_harga) : Math.round(Number(p.harga) * 0.95), // Estimasi harga wajar ML
+    jarakKampus: Number(p.jarak), // Jarak riil dari kalkulasi OSRM
+    jarakStasiun: Math.round(Number(p.jarak) * 0.8), // Variasi jarak stasiun pendukung
+    jarakjalanutama: Number(p.jarak), // Jarak ke jalan utama riil
+    gambar: p.id ? `${BASE_URL}/api/properties/${p.id}/image` : "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?w=800",
+    deskripsi: p.deskripsi || "Kamar kost nyaman, lokasi strategis dengan fasilitas pendukung lengkap.",
+    tanggalUpdate: (p.updatedAt || p.updated_at) ? (p.updatedAt || p.updated_at).split("T")[0] : "2026-07-08",
+  };
+}
+
+export const WILAYAH = [
+  {
+    kota: "Jakarta Pusat",
+    daerah: ["Menteng", "Gambir", "Senen", "Kemayoran", "Tanah Abang"]
+  },
+  {
+    kota: "Jakarta Selatan",
+    daerah: ["Tebet", "Kebayoran Baru", "Cilandak", "Setiabudi", "Pasar Minggu"]
+  },
+  {
+    kota: "Jakarta Barat",
+    daerah: ["Grogol", "Palmerah", "Kembangan", "Kebon Jeruk"]
+  },
+  {
+    kota: "Jakarta Utara",
+    daerah: ["Kelapa Gading", "Pluit", "Ancol", "Sunter"]
+  },
+  {
+    kota: "Jakarta Timur",
+    daerah: ["Rawamangun", "Pulogadung", "Jatinegara", "Cawang"]
+  }
+];
 
 export async function getKostList() {
-  await delay(400);
-  return DUMMY_KOST;
+  try {
+    // Ambil properti yang sudah aktif terverifikasi oleh Admin
+    const response = await fetch(`${BASE_URL}/api/properties?status_verifikasi=aktif`);
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Gagal memuat list properti.");
+    }
+
+    return (data.data || []).map(mapPropertyToMobile);
+  } catch (err) {
+    console.error("Gagal mengambil data kost:", err);
+    throw new Error("Gagal mengambil data kost dari backend.");
+  }
 }
 
 // Pencarian kost berdasarkan keyword, area (kota), dan daerah
 export async function searchKost({ keyword = "", area = "", daerah = "" } = {}) {
-  await delay(300);
-  const q = keyword.toLowerCase().trim();
-  return DUMMY_KOST.filter((k) => {
-    const matchArea    = area    ? k.area.toLowerCase()   === area.toLowerCase()   : true;
-    const matchDaerah  = daerah  ? k.daerah.toLowerCase() === daerah.toLowerCase() : true;
-    const matchKeyword = q
-      ? k.nama.toLowerCase().includes(q)   ||
-        k.area.toLowerCase().includes(q)   ||
-        k.daerah.toLowerCase().includes(q)
-      : true;
-    return matchArea && matchDaerah && matchKeyword;
-  });
+  try {
+    const list = await getKostList();
+    const q = keyword.toLowerCase().trim();
+
+    return list.filter((k) => {
+      const matchArea = area ? k.area.toLowerCase() === area.toLowerCase() : true;
+      const matchDaerah = daerah ? k.daerah.toLowerCase() === daerah.toLowerCase() : true;
+      const matchKeyword = q
+        ? k.nama.toLowerCase().includes(q) ||
+        k.area.toLowerCase().includes(q) ||
+        k.daerah.toLowerCase().includes(q) ||
+        k.deskripsi.toLowerCase().includes(q)
+        : true;
+      return matchArea && matchDaerah && matchKeyword;
+    });
+  } catch (err) {
+    console.error("Gagal melakukan pencarian:", err);
+    return [];
+  }
 }
 
 export async function getKostById(id) {
-  await delay(400);
-  const found = DUMMY_KOST.find((k) => k.id === id);
-  if (!found) throw new Error("Kost tidak ditemukan");
-  return found;
+  try {
+    const response = await fetch(`${BASE_URL}/api/properties/detail/${id}`);
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Properti tidak ditemukan.");
+    }
+
+    return mapPropertyToMobile(data.data);
+  } catch (err) {
+    console.error(`Gagal mengambil detail properti ID ${id}:`, err);
+    throw new Error("Kost tidak ditemukan.");
+  }
 }
 
 // --- PROFILE ---
 
 export async function getProfile() {
-  await delay(400);
-  return { nama: "", bio: "", email: "testing@gmail.com", password: "********" };
+  // Jika tidak ada user aktif di memori, kembalikan data guest
+  if (!currentUser) {
+    return { nama: "Guest", bio: "Belum masuk akun", email: "", password: "" };
+  }
+
+  try {
+    const response = await fetch(`${BASE_URL}/api/users/${currentUser.id}`, {
+      headers: getAuthHeaders()
+    });
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      return {
+        nama: data.data.name,
+        bio: "Pencari Kost RentWise",
+        email: data.data.email,
+        password: "••••••••"
+      };
+    }
+  } catch (err) {
+    console.error("Gagal memuat profil asli:", err);
+  }
+
+  // Fallback ke profil login jika panggil API gagal
+  return {
+    nama: currentUser.name || currentUser.nama || "User",
+    bio: "Pencari Kost RentWise",
+    email: currentUser.email || "",
+    password: "••••••••"
+  };
 }
 
 export async function updateProfile(data) {
-  await delay(500);
-  return { ...data, updated: true };
+  if (!currentUser) throw new Error("Wajib login untuk memperbarui profil.");
+
+  try {
+    const response = await fetch(`${BASE_URL}/api/users/${currentUser.id}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        name: data.nama,
+        email: data.email
+      })
+    });
+    const resData = await response.json();
+
+    if (!response.ok || !resData.success) {
+      throw new Error(resData.message || "Gagal memperbarui profil.");
+    }
+
+    // Update in-memory user
+    currentUser.name = resData.data.name;
+    currentUser.email = resData.data.email;
+
+    return { ...data, updated: true };
+  } catch (err) {
+    throw new Error(err.message || "Gagal menghubungi server.");
+  }
 }

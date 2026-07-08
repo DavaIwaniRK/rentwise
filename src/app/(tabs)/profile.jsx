@@ -22,7 +22,7 @@ export default function ProfileScreen() {
 
   function handleLogout() {
     logout();
-    router.replace("/(auth)/login");
+    router.replace("/auth/login");
   }
 
   if (loading) {
