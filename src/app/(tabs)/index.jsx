@@ -29,7 +29,6 @@ export default function HomeScreen() {
     return () => { isMounted = false; };
   }, []);
 
-  // Saat search bar di-tap, langsung pindah ke halaman Search
   function handleSearchTap() {
     router.push("/(tabs)/search");
   }
@@ -40,7 +39,6 @@ export default function HomeScreen() {
         Welcome, {user?.nama || "Pengguna"} !
       </Text>
 
-      {/* Search bar hanya sebagai tombol navigasi ke halaman Search */}
       <Pressable onPress={handleSearchTap} style={styles.searchWrap}>
         <View style={styles.searchBar} pointerEvents="none">
           <Ionicons name="search" size={18} color={colors.textMuted} />

@@ -2,7 +2,7 @@
 // Menghubungkan aplikasi React Native Expo ke server backend lokal Express.
 
 // Gunakan 10.0.2.2 untuk emulator Android, atau IP laptop Anda jika diuji menggunakan HP fisik
-const BASE_URL = "http://192.168.56.1:3001";
+const BASE_URL = "http://172.28.212.210:3001";
 
 // Variabel modul untuk menyimpan session user yang sedang aktif secara in-memory
 let currentToken = null;

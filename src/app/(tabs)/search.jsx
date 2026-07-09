@@ -36,13 +36,11 @@ export default function SearchScreen() {
 
   const inputRef = useRef(null);
 
-  // Auto-focus input saat halaman dibuka
   useEffect(() => {
     const timer = setTimeout(() => inputRef.current?.focus(), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  // Jalankan pencarian setiap kali keyword/area/daerah berubah
   useEffect(() => {
     if (!keyword && !selectedArea && !selectedDaerah) {
       setResults([]);
@@ -183,8 +181,6 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-
-      {/* Header: tombol back + search input */}
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.backBtn}>
           <Ionicons name="arrow-back" size={22} color={colors.text} />
@@ -208,7 +204,6 @@ export default function SearchScreen() {
         </View>
       </View>
 
-      {/* Chip filter aktif */}
       {(selectedArea || selectedDaerah) && (
         <View style={styles.filterRow}>
           <Ionicons name="filter" size={14} color={colors.primary} />
@@ -221,7 +216,6 @@ export default function SearchScreen() {
         </View>
       )}
 
-      {/* Konten: daftar wilayah ATAU hasil pencarian */}
       {mode === "wilayah" ? (
         <FlatList
           data={WILAYAH}

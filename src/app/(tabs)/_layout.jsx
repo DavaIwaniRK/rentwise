@@ -2,8 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { colors } from "../../constants/color";
 
-// Bottom tab dengan 3 menu sesuai desain Figma: Home, Search, Profile.
-
 export default function TabsLayout() {
   return (
     <Tabs
