@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { formatHargaBulanan, formatJarak, formatTanggal } from "../../../utils/format";
 import { Button } from "../../components/button";
@@ -35,6 +35,23 @@ export default function KostDetailScreen() {
       </SafeAreaView>
     );
   }
+
+  const handleRent = () => {
+    if (!kost || !kost.noTlp) return;
+    
+    // Bersihkan format nomor telpon menjadi digit saja
+    let cleanNumber = kost.noTlp.replace(/[^0-9]/g, '');
+    
+    // Jika diawali 0, ganti dengan 62 (Kode Negara Indonesia)
+    if (cleanNumber.startsWith('0')) {
+      cleanNumber = '62' + cleanNumber.substring(1);
+    }
+    
+    const url = `https://wa.me/${cleanNumber}`;
+    Linking.openURL(url).catch(err => {
+      console.error("Gagal membuka WhatsApp:", err);
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
@@ -86,7 +103,7 @@ export default function KostDetailScreen() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <Button title="Rent the Property" onPress={() => {}} />
+        <Button title="Rent the Property" onPress={handleRent} />
       </View>
     </SafeAreaView>
   );

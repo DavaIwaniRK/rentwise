@@ -2,7 +2,7 @@
 // Menghubungkan aplikasi React Native Expo ke server backend lokal Express.
 
 // Gunakan 10.0.2.2 untuk emulator Android, atau IP laptop Anda jika diuji menggunakan HP fisik
-const BASE_URL = "http://10.91.88.222:3001";
+const BASE_URL = "http://192.168.11.240:3001";
 
 // Variabel modul untuk menyimpan session user yang sedang aktif secara in-memory
 let currentToken = null;
@@ -113,6 +113,7 @@ function mapPropertyToMobile(p) {
     gambar: p.id ? `${BASE_URL}/api/properties/${p.id}/image` : "https://images.unsplash.com/photo-1560185007-5f0bb1866cab?w=800",
     deskripsi: p.deskripsi || "Kamar kost nyaman, lokasi strategis dengan fasilitas pendukung lengkap.",
     tanggalUpdate: (p.updatedAt || p.updated_at) ? (p.updatedAt || p.updated_at).split("T")[0] : "2026-07-08",
+    noTlp: p.owner?.no_tlp || p.no_tlp || "+62123456789",
   };
 }
 
