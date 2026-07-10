@@ -1,6 +1,6 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, StyleSheet, Text, View } from "react-native"; // 1. Tambahkan import Image di sini
 import { validateEmail, validatePassword } from "../../../utils/validator";
 import { Button } from "../../components/button";
 import { InputField } from "../../components/inputField";
@@ -30,8 +30,13 @@ export default function LoginScreen() {
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
+      {/* 2. GANTI STRUKTUR LOGOWRAP MENGGUNAKAN IMAGE */}
       <View style={styles.logoWrap}>
-        <Text style={styles.logo}>Rent{"\n"}Wise</Text>
+        <Image 
+          source={require("../../assets/images/logo.png")} 
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
       </View>
 
       <InputField
@@ -77,12 +82,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 40,
   },
-  logo: {
-    fontSize: typography.size.xxl,
-    fontWeight: typography.weight.bold,
-    color: colors.primary,
-    textAlign: "center",
-    lineHeight: 30,
+  // 3. Tambahkan styling khusus untuk mengatur dimensi logo agar proporsional
+  logoImage: {
+    width: 200,
+    height: 100,
   },
   apiError: {
     color: colors.danger,
