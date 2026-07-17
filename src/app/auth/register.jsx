@@ -61,7 +61,6 @@ export default function RegisterScreen() {
         value={password}
         onChangeText={setPassword}
         placeholder=""
-        secureTextEntry
         error={fieldErrors.password}
       />
 
